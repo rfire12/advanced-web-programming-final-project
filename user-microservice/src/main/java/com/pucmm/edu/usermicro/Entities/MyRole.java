@@ -10,13 +10,13 @@ public class MyRole implements Serializable {
     private int id;
 
     @Column(unique = true)
-    private String name;
+    private String role;
 
     public MyRole() {
     }
 
-    public MyRole(String name) {
-        this.name = name;
+    public MyRole(String role) {
+        this.role = role;
     }
 
     public int getId() {
@@ -27,11 +27,11 @@ public class MyRole implements Serializable {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getRole() {
+        return role;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setRole(String name) {
+        this.role = name;
     }
 }
