@@ -19,7 +19,7 @@ import java.util.List;
 public class JwtFilter extends OncePerRequestFilter {
     private String header = "Authorization";
     private String prefix = "Bearer ";
-    @Value("ourbesttokenyet")
+    @Value("1C8F4AD895E1DDE4FC5996B85473B48B831EF83D47546BB45C1C2899BA1C8F4AD895E1DDE4FC5996B85473B48B831EF83D47546BB45C1C2899BA")
     private String secret;
 
     @Override
