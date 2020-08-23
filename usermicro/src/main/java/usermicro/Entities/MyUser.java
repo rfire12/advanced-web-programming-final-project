@@ -1,27 +1,38 @@
 package usermicro.Entities;
 
+import java.io.Serializable;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 
 @Entity
-public class MyUser {
+public class MyUser implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int id;
+
     private String username;
     private String password;
+    private String name;
+    private String lastName;
     private String email;
+
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<MyRole> roles;
 
     public MyUser() {
 
     }
 
-    public MyUser(String username, String password, String email) {
+    public MyUser(String username, String password) {
         this.username = username;
         this.password = password;
-        this.email = email;
     }
 
     public int getId() {
@@ -54,5 +65,29 @@ public class MyUser {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public Set<MyRole> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<MyRole> roles) {
+        this.roles = roles;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 }

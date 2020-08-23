@@ -34,4 +34,8 @@ public class MyUserService {
         tmp.get().setEmail(user.getEmail());
         userRepository.save(tmp.get());
     }
+
+    public MyUser findByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
 }
