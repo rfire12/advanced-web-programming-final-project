@@ -16,9 +16,17 @@
   "license": "ISC",
   "homepage": "",
   "dependencies": {
+    "@date-io/date-fns": "^1.3.13",
+    "@material-ui/core": "^4.11.0",
+    "@material-ui/icons": "^4.9.1",
+    "@material-ui/pickers": "^3.2.10",
+    "clsx": "^1.1.1",
+    "date-fns": "^2.15.0",
+    "dotenv": "^8.2.0",
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
-    "react-router-dom": "^5.1.2"
+    "react-router-dom": "^5.1.2",
+    "uuid": "^8.3.0"
   },
   "devDependencies": {
     "@babel/core": "^7.7.2",

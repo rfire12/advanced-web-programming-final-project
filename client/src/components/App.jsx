@@ -1,19 +1,18 @@
 import React, { Component } from "react";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import "../assets/normalize.css";
+import LandingPage from './LandingPage/LandingPage';
 
-class App extends Component {
-  render() {
+const App = () => {
     return (
       <Router>
           <Switch>
             <Route path="/">
-                <h1>Test</h1>
+                <LandingPage />
             </Route>
           </Switch>
       </Router>
     );
   }
-}
 
 export default App;
