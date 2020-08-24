@@ -11,7 +11,7 @@ import Menu from "@material-ui/core/Menu";
 import MenuIcon from "@material-ui/icons/Menu";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import MailIcon from "@material-ui/icons/Mail";
-import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
+import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import Sidebar from "./Sidebar";
 
 const drawerWidth = 240;
@@ -94,11 +94,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Header = () => {
+const Header = ({ sidebarStatus = false, handleSidebarOpen, handleSidebarClose }) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
-  const [sidebarStatus, setSidebarStatus] = React.useState(false);
 
   const isMenuOpen = Boolean(anchorEl);
 
@@ -113,18 +112,6 @@ const Header = () => {
   const handleMenuClose = () => {
     setAnchorEl(null);
     handleMobileMenuClose();
-  };
-
-  const handleMobileMenuOpen = (event) => {
-    setMobileMoreAnchorEl(event.currentTarget);
-  };
-
-  const handleSidebarOpen = () => {
-    setSidebarStatus(true);
-  };
-
-  const handleSidebarClose = () => {
-    setSidebarStatus(false);
   };
 
   const menuId = "primary-search-account-menu";
