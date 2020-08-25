@@ -28,7 +28,20 @@ module.exports = {
           "style-loader",
           "css-loader",
         ]
-      }
+      },
+      {
+        test: /\.(woff(2)|jpeg|jpg)?$/,
+        use: [
+          {
+            loader: 'url-loader',
+            options: {
+              limit: 10000,
+              name: '/font/[hash].[ext]',
+              mimetype: 'application/font-woff',
+            },
+          },
+        ],
+      },
     ],
     
   },

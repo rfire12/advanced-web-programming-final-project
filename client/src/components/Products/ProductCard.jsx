@@ -11,17 +11,34 @@ import Typography from "@material-ui/core/Typography";
 const useStyles = makeStyles({
   root: {
     width: 300,
+    opacity: "1",
   },
   media: {
     height: 140,
   },
+  price: {
+    fontWeight: "bold",
+    marginLeft: "8px",
+  },
+  added: {
+    color: "green",
+    fontWeight: "bold",
+    paddingLeft: "60px",
+  },
+  selected: {
+    opacity: "0.5",
+  },
 });
 
-const Product = ({ title = "", description = "", image="" }) => {
+const ProductCard = ({ title = "", description = "", image = "", price = 0 }) => {
   const classes = useStyles();
 
+  const [selected, setSelected] = React.useState(false);
+
+  const cardClasses = selected ? `${classes.root} ${classes.selected}` : classes.root;
+
   return (
-    <Card className={classes.root}>
+    <Card className={cardClasses} onClick={() => setSelected(!selected)}>
       <CardActionArea>
         <CardMedia className={classes.media} image={image} title={title} />
         <CardContent>
@@ -34,15 +51,17 @@ const Product = ({ title = "", description = "", image="" }) => {
         </CardContent>
       </CardActionArea>
       <CardActions>
-        <Button size="small" color="primary">
-          Share
-        </Button>
-        <Button size="small" color="primary">
-          Learn More
-        </Button>
+        <Typography variant="subtitle2" gutterBottom className={classes.price}>
+          Precio: RD${price}.00
+        </Typography>
+        {selected && (
+          <Typography variant="subtitle2" gutterBottom className={classes.added}>
+            AÑADIDO
+          </Typography>
+        )}
       </CardActions>
     </Card>
   );
 };
 
-export default Product;
+export default ProductCard;
