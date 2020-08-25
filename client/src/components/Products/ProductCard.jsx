@@ -30,29 +30,38 @@ const useStyles = makeStyles({
   },
 });
 
-const ProductCard = ({ title = "", description = "", image = "", price = 0 }) => {
+const ProductCard = ({ product = {}, addToCart, removeFromCart }) => {
   const classes = useStyles();
 
-  const [selected, setSelected] = React.useState(false);
+  const onSelect = () => {
+    if (selected) {
+      removeFromCart(product.id);
+    } else {
+      addToCart(product);
+    }
 
+    setSelected(prevState => !prevState);
+  };
+
+  const [selected, setSelected] = React.useState(false);
   const cardClasses = selected ? `${classes.root} ${classes.selected}` : classes.root;
 
   return (
-    <Card className={cardClasses} onClick={() => setSelected(!selected)}>
+    <Card className={cardClasses} onClick={onSelect}>
       <CardActionArea>
-        <CardMedia className={classes.media} image={image} title={title} />
+        <CardMedia className={classes.media} image={product.image} title={product.title} />
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">
-            {title}
+            {product.name}
           </Typography>
           <Typography variant="body2" color="textSecondary" component="p">
-            {description}
+            {product.description}
           </Typography>
         </CardContent>
       </CardActionArea>
       <CardActions>
         <Typography variant="subtitle2" gutterBottom className={classes.price}>
-          Precio: RD${price}.00
+          Precio: RD${product.price}.00
         </Typography>
         {selected && (
           <Typography variant="subtitle2" gutterBottom className={classes.added}>

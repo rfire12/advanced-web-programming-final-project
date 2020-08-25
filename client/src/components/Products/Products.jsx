@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     fontWeight: "bold",
-    marginLeft: "7px"
+    marginLeft: "7px",
   },
   paymentButton: {
     position: "relative",
@@ -23,11 +23,25 @@ const useStyles = makeStyles((theme) => ({
 const Products = () => {
   const classes = useStyles();
 
+  const [cart, setCart] = React.useState([]);
+
+  const addToCart = (product) => {
+    setCart(prevState => [...prevState, product]);
+    console.log(cart);
+  };
+
+  const removeFromCart = (id) => {
+    const indexToRemove = cart.findIndex(product => product.id === id);
+    let newCart = JSON.parse(JSON.stringify(cart));
+    newCart.splice(indexToRemove, 1);
+    setCart(newCart);
+  };
+
   const productsList = [
-    { name: "Pre-Boda", image: "../../assets/pre-wedding.jpg", price: 1000 },
-    { name: "Boda", image: "../../assets/wedding.jpg", price: 5000 },
-    { name: "Cumpleaños", image: "../../assets/birthday.jpg", price: 3000 },
-    { name: "Video de evento", image: "../../assets/video-event.jpg", price: 4000 },
+    { id: 1, name: "Pre-Boda", image: "../../assets/pre-wedding.jpg", price: 1000 },
+    { id: 2, name: "Boda", image: "../../assets/wedding.jpg", price: 5000 },
+    { id: 3, name: "Cumpleaños", image: "../../assets/birthday.jpg", price: 3000 },
+    { id: 4, name: "Video de evento", image: "../../assets/video-event.jpg", price: 4000 },
   ];
 
   return (
@@ -37,7 +51,7 @@ const Products = () => {
       </Typography>
       {productsList.map((product) => (
         <div className={classes.container}>
-          <ProductCard title={product.name} image={product.image} price={product.price} />
+          <ProductCard product={product} addToCart={addToCart} removeFromCart={removeFromCart}/>
         </div>
       ))}
       <Button variant="contained" color="primary" disableElevation className={classes.paymentButton}>
