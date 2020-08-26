@@ -1,0 +1,95 @@
+version: "3.8"
+
+services:
+    configuration-server:
+        container_name: configuration-server
+        build: ./configuration-server
+        ports:
+          - "8888:8888"
+        networks:
+          - multimedia-network
+        restart: always
+
+    eureka-server:
+        build: ./eureka-server
+        restart: always
+        ports:
+            - "8761:8761"
+        networks:
+            - multimedia-network
+        depends_on:
+            - configuration-server
+        restart: always
+
+    zuul-server:
+        container_name: zuul-server
+        build: ./zuul-server
+        restart: always
+        ports:
+            - "8080:8080"
+        networks:
+            - multimedia-network
+        depends_on:
+            - eureka-server
+        restart: always
+    
+    users-microservice-db:
+        container_name: users-microservice-db
+        image: mysql:latest
+        ports:
+            - "3699:3306"
+        networks:
+            - multimedia-network
+        volumes:
+            - /data/users/mysql
+        environment:
+            - MYSQL_USER=root
+            - MYSQL_ROOT_PASSWORD=123456
+            - MYSQL_DATABASE=users
+
+    users-microservice:
+        container_name: users-microservice
+        build: ./users-microservice
+        depends_on:
+            - users-microservice-db
+        ports:
+            - "3698:3698"
+        volumes:
+            - /data/users/app
+        networks:
+            - multimedia-network
+        restart: always
+
+    events-microservice-db:
+        container_name: events-microservice-db
+        image: mysql:latest
+        ports:
+            - "7453:3306"
+        networks:
+            - multimedia-network
+        volumes:
+            - /data/events/mysql
+        environment:
+            - MYSQL_USER=root
+            - MYSQL_ROOT_PASSWORD=123456
+            - MYSQL_DATABASE=events
+
+    events-microservice:
+        container_name: events-microservice
+        build: ./events-microservice
+        depends_on:
+            - events-microservice-db
+        ports:
+            - "7452:7452"
+        volumes:
+            - /data/events/app
+        networks:
+            - multimedia-network
+        restart: always
+
+volumes:
+    data:
+
+networks:
+    multimedia-network:
+        driver: bridge
