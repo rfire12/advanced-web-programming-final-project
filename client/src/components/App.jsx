@@ -5,6 +5,7 @@ import "../assets/normalize.css";
 import Header from "./Header/Header";
 import Products from "./Products/Products";
 import { makeStyles } from "@material-ui/core";
+import Login from "./Login/Login";
 
 const drawerWidth = 280;
 
@@ -14,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
-    margin: "100px 40px"
+    margin: "100px 40px",
   },
   containerShift: {
     width: `calc(100% - ${drawerWidth}px)`,
@@ -40,14 +41,19 @@ const App = () => {
 
   return (
     <Router>
-      <Route path="/">
-        <Header sidebarStatus={sidebarStatus} handleSidebarOpen={handleSidebarOpen} handleSidebarClose={handleSidebarClose} />
-      </Route>
+      <Switch>
+        <Route path="/login">
+          <Login />
+        </Route>
+        <Route path="/">
+          <Header sidebarStatus={sidebarStatus} handleSidebarOpen={handleSidebarOpen} handleSidebarClose={handleSidebarClose} />
+        </Route>
+      </Switch>
       <Switch>
         <div
           className={clsx(classes.container, {
             [classes.containerShift]: sidebarStatus,
-          }) }
+          })}
         >
           <Route path="/productos">
             <Products />
