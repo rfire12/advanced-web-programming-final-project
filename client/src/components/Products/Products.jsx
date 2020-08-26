@@ -28,7 +28,7 @@ const Products = () => {
 
   const addToCart = (product) => {
     setCart((prevState) => [...prevState, product]);
-    console.log(cart);
+
   };
 
   const removeFromCart = (id) => {

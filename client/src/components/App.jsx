@@ -7,6 +7,8 @@ import Products from "./Products/Products";
 import { makeStyles } from "@material-ui/core";
 import Login from "./Login/Login";
 import SignUp from "./SignUp/SignUp";
+import OrdersHistory from "./OrdersHistory/OrdersHistory";
+import PendingOrders from "./PendingOrders/PendingOrders";
 
 const drawerWidth = 280;
 
@@ -61,6 +63,18 @@ const App = () => {
         >
           <Route path="/productos">
             <Products />
+          </Route>
+          <Route path="/historial-compras">
+            <OrdersHistory />
+          </Route>
+          <Route path="/solicitudes-pendientes">
+            <PendingOrders />
+          </Route>
+          <Route path="/compras-realizadas">
+            <PendingOrders />
+          </Route>
+          <Route path="/graficos">
+            <PendingOrders />
           </Route>
         </div>
       </Switch>
