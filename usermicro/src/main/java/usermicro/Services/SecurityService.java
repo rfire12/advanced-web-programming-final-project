@@ -44,7 +44,7 @@ public class SecurityService implements UserDetailsService {
             roleService.create(adminRole);
 
             MyRole employeeRole = new MyRole();
-            employeeRoles.setName("ROLE_EMPLOYEE");
+            employeeRole.setName("ROLE_EMPLOYEE");
             roleService.create(employeeRole);
 
             MyUser adminUser = new MyUser();
