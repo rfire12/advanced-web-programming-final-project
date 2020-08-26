@@ -36,3 +36,4 @@ confserver/bin/*
 eurekaserver/bin/*
 servidor-perimetral/bin/*
 
+notifications-microservice/SENDGRID_API_KEY.txt
