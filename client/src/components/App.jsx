@@ -6,6 +6,7 @@ import Header from "./Header/Header";
 import Products from "./Products/Products";
 import { makeStyles } from "@material-ui/core";
 import Login from "./Login/Login";
+import SignUp from "./SignUp/SignUp";
 
 const drawerWidth = 280;
 
@@ -42,8 +43,11 @@ const App = () => {
   return (
     <Router>
       <Switch>
-        <Route path="/login">
+        <Route path="/iniciar-sesion">
           <Login />
+        </Route>
+        <Route path="/registrarse">
+          <SignUp />
         </Route>
         <Route path="/">
           <Header sidebarStatus={sidebarStatus} handleSidebarOpen={handleSidebarOpen} handleSidebarClose={handleSidebarClose} />
