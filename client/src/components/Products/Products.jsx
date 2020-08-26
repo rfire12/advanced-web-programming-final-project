@@ -4,6 +4,7 @@ import { makeStyles } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import Fade from "@material-ui/core/Fade";
+import { CartesianGrid } from "recharts";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -18,40 +19,34 @@ const useStyles = makeStyles((theme) => ({
     display: "block",
     marginTop: "20px",
     position: "relative",
-    textAlign: "center"
+    textAlign: "center",
   },
   hidePaymentButton: {
     visibility: "hidden",
-  }
+  },
 }));
 
 const Products = () => {
   const classes = useStyles();
 
   const [cart, setCart] = React.useState([]);
+  const [totalAmount, setTotalAmount] = React.useState(0);
   const [paidFor, setPaidFor] = React.useState(false);
   const [loaded, setLoaded] = React.useState(false);
 
-  let paypalRef = React.useRef(null);
-
- const getTotalAmount = () => {
-  const totalAmount = cart.reduce((total, product) => total + product.price);
-  return totalAmount / 58;
- }
+  let paypalRef = React.useRef();
 
   React.useEffect(() => {
     window.paypal
       .Buttons({
         createOrder: (data, actions) => {
-          const totalAmount = getTotalAmount();
-
           return actions.order.create({
             purchase_units: [
               {
                 description: "Multimedia Events",
                 amount: {
                   currency_code: "USD",
-                  value: totalAmount,
+                  value: 1000,
                 },
               },
             ],
@@ -72,13 +67,16 @@ const Products = () => {
 
   const addToCart = (product) => {
     setCart((prevState) => [...prevState, product]);
+    setTotalAmount((prevTotal) => prevTotal + Math.round(product.price / 58));
   };
 
   const removeFromCart = (id) => {
     const indexToRemove = cart.findIndex((product) => product.id === id);
     let newCart = JSON.parse(JSON.stringify(cart));
     newCart.splice(indexToRemove, 1);
+
     setCart(newCart);
+    //setTotalAmount((prevTotal) => prevTotal - Math.round(product.price / 58));
   };
 
   const productsList = [
