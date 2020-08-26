@@ -23,6 +23,7 @@
     "clsx": "^1.1.1",
     "date-fns": "^2.15.0",
     "dotenv": "^8.2.0",
+    "jwt-decode": "^2.2.0",
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
     "react-paypal-button-v2": "^2.6.2",

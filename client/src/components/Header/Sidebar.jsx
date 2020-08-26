@@ -13,6 +13,7 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import InboxIcon from "@material-ui/icons/MoveToInbox";
 import MailIcon from "@material-ui/icons/Mail";
+import { getUser } from "../../helpers/helpers";
 
 const drawerWidth = 240;
 
@@ -76,6 +77,9 @@ const useStyles = makeStyles((theme) => ({
 const Sidebar = ({ open = false, handleSidebarClose }) => {
   const classes = useStyles();
   const theme = useTheme();
+
+  const user = getUser();
+
   const clientsMenu = [
     { id: "1", title: "Productos", url: "/productos" },
     { id: "2", title: "Historial de compras", url: "/historial-compras" },
@@ -104,23 +108,32 @@ const Sidebar = ({ open = false, handleSidebarClose }) => {
           <IconButton onClick={handleSidebarClose}>{theme.direction === "ltr" ? <ChevronLeftIcon /> : <ChevronRightIcon />}</IconButton>
         </div>
         <Divider />
-        <List>
-          {clientsMenu.map((item, index) => (
-            <ListItem button component="a" key={item.id} href={item.url}>
-              <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-              <ListItemText primary={item.title} />
-            </ListItem>
-          ))}
-        </List>
-        <Divider />
-        <List>
-          {employeesMenu.map((item, index) => (
-            <ListItem button component="a" key={item.id} href={item.url}>
-              <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-              <ListItemText primary={item.title} />
-            </ListItem>
-          ))}
-        </List>
+        {user.userType === "client" && (
+          <List>
+            {clientsMenu.map((item, index) => (
+              <ListItem button component="a" key={item.id} href={item.url}>
+                <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
+                <ListItemText primary={item.title} />
+              </ListItem>
+            ))}
+          </List>
+        )}
+
+        {(user.userType === "employee" || user.userType === "admin") && (
+          <List>
+            {employeesMenu.map((item, index) => {
+              if (item.url === "/crear-empleado" && user.userType !== "admin") {
+                return;
+              }
+              return (
+                <ListItem button component="a" key={item.id} href={item.url}>
+                  <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
+                  <ListItemText primary={item.title} />
+                </ListItem>
+              );
+            })}
+          </List>
+        )}
       </Drawer>
     </div>
   );

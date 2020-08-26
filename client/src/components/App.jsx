@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import clsx from "clsx";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Link, Redirect } from "react-router-dom";
 import "../assets/normalize.css";
 import Header from "./Header/Header";
 import Products from "./Products/Products";
@@ -12,6 +12,8 @@ import PendingOrders from "./PendingOrders/PendingOrders";
 import AllOrdersHistory from "./AllOrdersHistory/AllOrdersHistory";
 import Charts from "./Charts/Charts";
 import SignUpEmployee from "./SignUpEmployee/SignUpEmployee";
+import Page404 from "./Page404/Page404";
+import { getUser } from "../helpers/helpers";
 
 const drawerWidth = 280;
 
@@ -45,6 +47,8 @@ const App = () => {
     setSidebarStatus(false);
   };
 
+  const user = getUser();
+
   return (
     <Router>
       <Switch>
@@ -64,24 +68,41 @@ const App = () => {
             [classes.containerShift]: sidebarStatus,
           })}
         >
-          <Route path="/productos">
-            <Products />
-          </Route>
-          <Route path="/historial-compras">
-            <OrdersHistory />
-          </Route>
-          <Route path="/solicitudes-pendientes">
-            <PendingOrders />
-          </Route>
-          <Route path="/compras-realizadas">
-            <AllOrdersHistory />
-          </Route>
-          <Route path="/graficos">
-            <Charts />
-          </Route>
-          <Route path="/crear-empleado">
-            <SignUpEmployee />
-          </Route>
+          {user.userType === "client" && (
+            <Route path="/productos">
+              <Products />
+            </Route>
+          )}
+
+          {user.userType === "client" && (
+            <Route path="/historial-compras">
+              <OrdersHistory />
+            </Route>
+          )}
+
+          {(user.userType === "employee" || user.userType === "admin") && (
+            <Route path="/solicitudes-pendientes">
+              <PendingOrders />
+            </Route>
+          )}
+
+          {(user.userType === "employee" || user.userType === "admin") && (
+            <Route path="/compras-realizadas">
+              <AllOrdersHistory />
+            </Route>
+          )}
+
+          {(user.userType === "employee" || user.userType === "admin") && (
+            <Route path="/graficos">
+              <Charts />
+            </Route>
+          )}
+
+          {user.userType === "admin" && (
+            <Route path="/crear-empleado">
+              <SignUpEmployee />
+            </Route>
+          )}
         </div>
       </Switch>
     </Router>
