@@ -23,7 +23,6 @@ import usermicro.Entities.MyUser;
 import usermicro.Services.MyUserService;
 
 @RestController
-@RequestMapping("/user")
 public class MyUserController {
     @Autowired
     MyUserService userService;

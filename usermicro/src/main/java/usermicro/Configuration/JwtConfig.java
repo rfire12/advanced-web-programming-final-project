@@ -27,20 +27,17 @@ public class JwtConfig extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-        if (!request.getServletPath().equals("/user/hello") && !request.getServletPath().equals("/user/auth")
-                && !request.getServletPath().equals("/dbconsole")) {
-            if (JWTExists(request, response)) {
-                Claims claims = validateToken(request);
-                if (claims.get("authorities") != null) {
-                    setUpSpringAuthentication(claims);
-                } else {
-                    SecurityContextHolder.clearContext();
-                }
-                filterChain.doFilter(request, response);
+        if (JWTExists(request, response)) {
+            Claims claims = validateToken(request);
+            if (claims.get("authorities") != null) {
+                setUpSpringAuthentication(claims);
             } else {
-                response.sendError(HttpServletResponse.SC_FORBIDDEN, "Not enough permissions");
-                return;
+                SecurityContextHolder.clearContext();
             }
+            filterChain.doFilter(request, response);
+        } else {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN, "Not enough permissions");
+            return;
         }
         filterChain.doFilter(request, response);
     }
