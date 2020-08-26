@@ -10,11 +10,11 @@ const AllOrdersHistory = () => {
 
   React.useEffect(() => {
     const newData = [
-      createData(0, "16 Mar, 2019", "Elvis Presley", "Tupelo, MS", 312.44),
-      createData(1, "16 Mar, 2019", "Paul McCartney", "London, UK", 866.99),
-      createData(2, "16 Mar, 2019", "Tom Scholz", "Boston, MA", 100.81),
-      createData(3, "16 Mar, 2019", "Michael Jackson", "Gary, IN", 654.39),
-      createData(4, "15 Mar, 2019", "Bruce Springsteen", "Long Branch, NJ", 212.79),
+      createData(0, "16 Mar, 2019", "Pre-boda, Boda", "Tupelo, MS", 312.44),
+      createData(1, "16 Mar, 2019", "Cumpleaños", "London, UK", 866.99),
+      createData(2, "16 Mar, 2019", "Video Evento", "Boston, MA", 100.81),
+      createData(3, "16 Mar, 2019", "Video Evento", "Gary, IN", 654.39),
+      createData(4, "15 Mar, 2019", "Cumpleaños", "Long Branch, NJ", 212.79),
     ];
 
     setData(newData);
