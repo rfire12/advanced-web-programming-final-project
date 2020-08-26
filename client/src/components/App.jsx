@@ -11,6 +11,7 @@ import OrdersHistory from "./OrdersHistory/OrdersHistory";
 import PendingOrders from "./PendingOrders/PendingOrders";
 import AllOrdersHistory from "./AllOrdersHistory/AllOrdersHistory";
 import Charts from "./Charts/Charts";
+import SignUpEmployee from "./SignUpEmployee/SignUpEmployee";
 
 const drawerWidth = 280;
 
@@ -77,6 +78,9 @@ const App = () => {
           </Route>
           <Route path="/graficos">
             <Charts />
+          </Route>
+          <Route path="/crear-empleado">
+            <SignUpEmployee />
           </Route>
         </div>
       </Switch>
