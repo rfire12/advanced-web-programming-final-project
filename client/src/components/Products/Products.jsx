@@ -4,6 +4,8 @@ import { makeStyles } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import Fade from "@material-ui/core/Fade";
+import { CartesianGrid } from "recharts";
+import PayButton from "../PayButton/PayButton";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -15,9 +17,13 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: "7px",
   },
   paymentButton: {
-    position: "relative",
     display: "block",
-    margin: "40px auto",
+    marginTop: "20px",
+    position: "relative",
+    textAlign: "center",
+  },
+  hidePaymentButton: {
+    visibility: "hidden",
   },
 }));
 
@@ -25,11 +31,16 @@ const Products = () => {
   const classes = useStyles();
 
   const [cart, setCart] = React.useState([]);
+  const [paidFor, setPaidFor] = React.useState(false);
 
   const addToCart = (product) => {
     setCart((prevState) => [...prevState, product]);
-
   };
+
+  const getTotalAmount = () => {
+    const totalAmount = cart.reduce((total, product) => total + product.price, 0);
+    return Math.round(totalAmount / 58);
+  }
 
   const removeFromCart = (id) => {
     const indexToRemove = cart.findIndex((product) => product.id === id);
@@ -45,25 +56,44 @@ const Products = () => {
     { id: 4, name: "Video de evento", image: "../../assets/video-event.jpg", price: 4000 },
   ];
 
+  const paymentButtonVisibility = cart.length === 0 ? `${classes.paymentButton} ${classes.hidePaymentButton}` : classes.paymentButton;
+
   return (
     <>
-      <Typography className={classes.title} variant="h6" gutterBottom>
-        Seleccione los productos que desea adquirir
-      </Typography>
-      {productsList.map((product) => (
-        <div className={classes.container}>
-          <ProductCard product={product} addToCart={addToCart} removeFromCart={removeFromCart} />
+      {!paidFor ? (
+        <div>
+          <Typography className={classes.title} variant="h6" gutterBottom>
+            Seleccione los productos que desea adquirir
+          </Typography>
+          {productsList.map((product) => (
+            <div className={classes.container}>
+              <ProductCard product={product} addToCart={addToCart} removeFromCart={removeFromCart} />
+            </div>
+          ))}
+          <div className={paymentButtonVisibility}>
+            <PayButton amount={getTotalAmount()} />
+          </div>
+          <Typography className={classes.title} variant="h6" gutterBottom>
+            Total Pesos: RD${getTotalAmount()*58}.00
+          </Typography>
+          <Typography className={classes.title} variant="h6" gutterBottom>
+            Total USD: &nbsp;&nbsp;&nbsp;US${getTotalAmount()}.00
+          </Typography>
         </div>
-      ))}
-      {cart.length > 0 && (
-        <Fade in>
-          <Button variant="contained" color="primary" disableElevation className={classes.paymentButton}>
-            Proceder con el pago
-          </Button>
-        </Fade>
+      ) : (
+        <Typography className={classes.title} variant="h6" gutterBottom>
+          Gracias por su compra!
+        </Typography>
       )}
     </>
   );
 };
 
 export default Products;
+
+/*
+            <Fade in>
+              <Button variant="contained" color="primary" disableElevation className={classes.paymentButton}>
+                Proceder con el pago
+              </Button>
+          </Fade>*/
