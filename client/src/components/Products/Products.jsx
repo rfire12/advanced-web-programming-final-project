@@ -40,7 +40,7 @@ const Products = () => {
   const getTotalAmount = () => {
     const totalAmount = cart.reduce((total, product) => total + product.price, 0);
     return Math.round(totalAmount / 58);
-  }
+  };
 
   const removeFromCart = (id) => {
     const indexToRemove = cart.findIndex((product) => product.id === id);
@@ -74,7 +74,7 @@ const Products = () => {
             <PayButton amount={getTotalAmount()} />
           </div>
           <Typography className={classes.title} variant="h6" gutterBottom>
-            Total Pesos: RD${getTotalAmount()*58}.00
+            Total Pesos: RD${Math.round((getTotalAmount() * 58) / 1000) * 1000}.00
           </Typography>
           <Typography className={classes.title} variant="h6" gutterBottom>
             Total USD: &nbsp;&nbsp;&nbsp;US${getTotalAmount()}.00
