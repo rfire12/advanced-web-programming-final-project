@@ -4,7 +4,6 @@ const TOKEN = "token";
 const HOST = "https://localhost:8080";
 const USERSERVICE = "users-microservice";
 const NOTIFICATIONSERVICE = "notifications-microservice";
-const EVENTSERVICE = "events-microservice";
 
 export const getJWT = () => {
   return "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEyMyIsIm5hbWUiOiJKb2hucyBEb2UiLCJlbWFpbCI6ImNvcnJlb0Bjb3JyZW8uY29tIiwidXNlclR5cGUiOiJjbGllbnQifQ.gG9Gnxb3XIItO9o7GSysJE-E-qE7fwCwJu-Lv8x4eLQ";
@@ -25,10 +24,10 @@ export const onLogin = (username, password) => {
     headers: {
       "content-type": "application/json",
     },
-    body: {
+    body: JSON.stringify({
       username,
       password,
-    },
+    }),
   };
 
   fetch(url, params)
@@ -53,13 +52,13 @@ export const onCreateUser = (name = "", lastName = "", email = "", userType = "c
     headers: {
       "content-type": "application/json",
     },
-    body: {
+    body: JSON.stringify({
       name,
       lastName,
       email,
       username,
       userType,
-    },
+    }),
   };
 
   fetch(url, params)
