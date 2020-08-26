@@ -9,6 +9,8 @@ import Login from "./Login/Login";
 import SignUp from "./SignUp/SignUp";
 import OrdersHistory from "./OrdersHistory/OrdersHistory";
 import PendingOrders from "./PendingOrders/PendingOrders";
+import AllOrdersHistory from "./AllOrdersHistory/AllOrdersHistory";
+import Charts from "./Charts/Charts";
 
 const drawerWidth = 280;
 
@@ -71,10 +73,10 @@ const App = () => {
             <PendingOrders />
           </Route>
           <Route path="/compras-realizadas">
-            <PendingOrders />
+            <AllOrdersHistory />
           </Route>
           <Route path="/graficos">
-            <PendingOrders />
+            <Charts />
           </Route>
         </div>
       </Switch>
