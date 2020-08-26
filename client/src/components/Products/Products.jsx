@@ -4,6 +4,7 @@ import { makeStyles } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import Fade from "@material-ui/core/Fade";
+import { CartesianGrid } from "recharts";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -15,9 +16,13 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: "7px",
   },
   paymentButton: {
-    position: "relative",
     display: "block",
-    margin: "40px auto",
+    marginTop: "20px",
+    position: "relative",
+    textAlign: "center",
+  },
+  hidePaymentButton: {
+    visibility: "hidden",
   },
 }));
 
@@ -25,17 +30,53 @@ const Products = () => {
   const classes = useStyles();
 
   const [cart, setCart] = React.useState([]);
+  const [totalAmount, setTotalAmount] = React.useState(0);
+  const [paidFor, setPaidFor] = React.useState(false);
+  const [loaded, setLoaded] = React.useState(false);
+
+  let paypalRef = React.useRef();
+
+  React.useEffect(() => {
+    window.paypal
+      .Buttons({
+        createOrder: (data, actions) => {
+          return actions.order.create({
+            purchase_units: [
+              {
+                description: "Multimedia Events",
+                amount: {
+                  currency_code: "USD",
+                  value: 1000,
+                },
+              },
+            ],
+          });
+        },
+        onApprove: async (data, actions) => {
+          const order = await actions.order.capture();
+          setPaidFor(true);
+          console.log(order);
+        },
+        onError: (err) => {
+          setError(err);
+          console.error(err);
+        },
+      })
+      .render(paypalRef.current);
+  }, []);
 
   const addToCart = (product) => {
     setCart((prevState) => [...prevState, product]);
-
+    setTotalAmount((prevTotal) => prevTotal + Math.round(product.price / 58));
   };
 
   const removeFromCart = (id) => {
     const indexToRemove = cart.findIndex((product) => product.id === id);
     let newCart = JSON.parse(JSON.stringify(cart));
     newCart.splice(indexToRemove, 1);
+
     setCart(newCart);
+    //setTotalAmount((prevTotal) => prevTotal - Math.round(product.price / 58));
   };
 
   const productsList = [
@@ -45,25 +86,38 @@ const Products = () => {
     { id: 4, name: "Video de evento", image: "../../assets/video-event.jpg", price: 4000 },
   ];
 
+  const paymentButtonVisibility = cart.length === 0 ? `${classes.paymentButton} ${classes.hidePaymentButton}` : classes.paymentButton;
+
   return (
     <>
-      <Typography className={classes.title} variant="h6" gutterBottom>
-        Seleccione los productos que desea adquirir
-      </Typography>
-      {productsList.map((product) => (
-        <div className={classes.container}>
-          <ProductCard product={product} addToCart={addToCart} removeFromCart={removeFromCart} />
+      {!paidFor ? (
+        <div>
+          <Typography className={classes.title} variant="h6" gutterBottom>
+            Seleccione los productos que desea adquirir
+          </Typography>
+          {productsList.map((product) => (
+            <div className={classes.container}>
+              <ProductCard product={product} addToCart={addToCart} removeFromCart={removeFromCart} />
+            </div>
+          ))}
+          <div className={paymentButtonVisibility}>
+            <div ref={paypalRef} />
+          </div>
         </div>
-      ))}
-      {cart.length > 0 && (
-        <Fade in>
-          <Button variant="contained" color="primary" disableElevation className={classes.paymentButton}>
-            Proceder con el pago
-          </Button>
-        </Fade>
+      ) : (
+        <Typography className={classes.title} variant="h6" gutterBottom>
+          Gracias por su compra!
+        </Typography>
       )}
     </>
   );
 };
 
 export default Products;
+
+/*
+            <Fade in>
+              <Button variant="contained" color="primary" disableElevation className={classes.paymentButton}>
+                Proceder con el pago
+              </Button>
+          </Fade>*/
