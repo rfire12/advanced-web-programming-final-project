@@ -1,5 +1,6 @@
 import React from "react";
 import Table from "../Table/Table";
+import { getJWT } from "../../helpers/helpers";
 
 const AllOrdersHistory = () => {
   const fields = ["date", "products", "status", "amount"];
@@ -7,6 +8,9 @@ const AllOrdersHistory = () => {
   const head = { date: "Fecha", products: "Productos", status: "Status", amount: "Total" };
 
   const [data, setData] = React.useState([]);
+
+  const HOST = "https://localhost:8080";
+  const EVENTSERVICE = "events-microservice";
 
   React.useEffect(() => {
     const newData = [
@@ -24,6 +28,24 @@ const AllOrdersHistory = () => {
   function createData(id, date, products, status, amount) {
     return { id, date, products, status, amount };
   }
+
+  const getData = () => {
+    const url = `${HOST}/${EVENTSERVICE}/`;
+    const params = {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        Authorization: getJWT(),
+      },
+    };
+
+    fetch(url, params)
+      .then((response) => response.json())
+      .then((response) => {
+        setData(response.data)
+      })
+      .catch((e) => console.log(e));
+  };
 
   return <Table title="Historial de ordenes de todos los clientes" fields={fields} head={head} data={data} />;
 };
