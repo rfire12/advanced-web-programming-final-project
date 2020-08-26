@@ -5,6 +5,13 @@ import "../assets/normalize.css";
 import Header from "./Header/Header";
 import Products from "./Products/Products";
 import { makeStyles } from "@material-ui/core";
+import Login from "./Login/Login";
+import SignUp from "./SignUp/SignUp";
+import OrdersHistory from "./OrdersHistory/OrdersHistory";
+import PendingOrders from "./PendingOrders/PendingOrders";
+import AllOrdersHistory from "./AllOrdersHistory/AllOrdersHistory";
+import Charts from "./Charts/Charts";
+import SignUpEmployee from "./SignUpEmployee/SignUpEmployee";
 
 const drawerWidth = 280;
 
@@ -14,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
-    margin: "100px 40px"
+    margin: "100px 40px",
   },
   containerShift: {
     width: `calc(100% - ${drawerWidth}px)`,
@@ -40,17 +47,40 @@ const App = () => {
 
   return (
     <Router>
-      <Route path="/">
-        <Header sidebarStatus={sidebarStatus} handleSidebarOpen={handleSidebarOpen} handleSidebarClose={handleSidebarClose} />
-      </Route>
+      <Switch>
+        <Route path="/iniciar-sesion">
+          <Login />
+        </Route>
+        <Route path="/registrarse">
+          <SignUp />
+        </Route>
+        <Route path="/">
+          <Header sidebarStatus={sidebarStatus} handleSidebarOpen={handleSidebarOpen} handleSidebarClose={handleSidebarClose} />
+        </Route>
+      </Switch>
       <Switch>
         <div
           className={clsx(classes.container, {
             [classes.containerShift]: sidebarStatus,
-          }) }
+          })}
         >
           <Route path="/productos">
             <Products />
+          </Route>
+          <Route path="/historial-compras">
+            <OrdersHistory />
+          </Route>
+          <Route path="/solicitudes-pendientes">
+            <PendingOrders />
+          </Route>
+          <Route path="/compras-realizadas">
+            <AllOrdersHistory />
+          </Route>
+          <Route path="/graficos">
+            <Charts />
+          </Route>
+          <Route path="/crear-empleado">
+            <SignUpEmployee />
           </Route>
         </div>
       </Switch>

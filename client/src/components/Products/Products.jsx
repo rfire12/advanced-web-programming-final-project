@@ -3,6 +3,7 @@ import ProductCard from "./ProductCard";
 import { makeStyles } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
+import Fade from "@material-ui/core/Fade";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -26,12 +27,12 @@ const Products = () => {
   const [cart, setCart] = React.useState([]);
 
   const addToCart = (product) => {
-    setCart(prevState => [...prevState, product]);
-    console.log(cart);
+    setCart((prevState) => [...prevState, product]);
+
   };
 
   const removeFromCart = (id) => {
-    const indexToRemove = cart.findIndex(product => product.id === id);
+    const indexToRemove = cart.findIndex((product) => product.id === id);
     let newCart = JSON.parse(JSON.stringify(cart));
     newCart.splice(indexToRemove, 1);
     setCart(newCart);
@@ -51,12 +52,16 @@ const Products = () => {
       </Typography>
       {productsList.map((product) => (
         <div className={classes.container}>
-          <ProductCard product={product} addToCart={addToCart} removeFromCart={removeFromCart}/>
+          <ProductCard product={product} addToCart={addToCart} removeFromCart={removeFromCart} />
         </div>
       ))}
-      <Button variant="contained" color="primary" disableElevation className={classes.paymentButton}>
-        Proceder con el pago
-      </Button>
+      {cart.length > 0 && (
+        <Fade in>
+          <Button variant="contained" color="primary" disableElevation className={classes.paymentButton}>
+            Proceder con el pago
+          </Button>
+        </Fade>
+      )}
     </>
   );
 };

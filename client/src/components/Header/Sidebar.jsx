@@ -85,6 +85,7 @@ const Sidebar = ({ open = false, handleSidebarClose }) => {
     { id: "3", title: "Solicitudes pendientes", url: "/solicitudes-pendientes" },
     { id: "4", title: "Compras realizadas", url: "/compras-realizadas" },
     { id: "5", title: "Graficos", url: "/graficos" },
+    { id: "5", title: "Crear Empleado", url: "/crear-empleado" },
   ];
 
   return (
