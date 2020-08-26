@@ -5,6 +5,7 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import Fade from "@material-ui/core/Fade";
 import { CartesianGrid } from "recharts";
+import PayButton from "../PayButton/PayButton";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -30,53 +31,22 @@ const Products = () => {
   const classes = useStyles();
 
   const [cart, setCart] = React.useState([]);
-  const [totalAmount, setTotalAmount] = React.useState(0);
   const [paidFor, setPaidFor] = React.useState(false);
-  const [loaded, setLoaded] = React.useState(false);
-
-  let paypalRef = React.useRef();
-
-  React.useEffect(() => {
-    window.paypal
-      .Buttons({
-        createOrder: (data, actions) => {
-          return actions.order.create({
-            purchase_units: [
-              {
-                description: "Multimedia Events",
-                amount: {
-                  currency_code: "USD",
-                  value: 1000,
-                },
-              },
-            ],
-          });
-        },
-        onApprove: async (data, actions) => {
-          const order = await actions.order.capture();
-          setPaidFor(true);
-          console.log(order);
-        },
-        onError: (err) => {
-          setError(err);
-          console.error(err);
-        },
-      })
-      .render(paypalRef.current);
-  }, []);
 
   const addToCart = (product) => {
     setCart((prevState) => [...prevState, product]);
-    setTotalAmount((prevTotal) => prevTotal + Math.round(product.price / 58));
   };
+
+  const getTotalAmount = () => {
+    const totalAmount = cart.reduce((total, product) => total + product.price, 0);
+    return Math.round(totalAmount / 58);
+  }
 
   const removeFromCart = (id) => {
     const indexToRemove = cart.findIndex((product) => product.id === id);
     let newCart = JSON.parse(JSON.stringify(cart));
     newCart.splice(indexToRemove, 1);
-
     setCart(newCart);
-    //setTotalAmount((prevTotal) => prevTotal - Math.round(product.price / 58));
   };
 
   const productsList = [
@@ -101,8 +71,14 @@ const Products = () => {
             </div>
           ))}
           <div className={paymentButtonVisibility}>
-            <div ref={paypalRef} />
+            <PayButton amount={getTotalAmount()} />
           </div>
+          <Typography className={classes.title} variant="h6" gutterBottom>
+            Total Pesos: RD${getTotalAmount()*58}.00
+          </Typography>
+          <Typography className={classes.title} variant="h6" gutterBottom>
+            Total USD: &nbsp;&nbsp;&nbsp;US${getTotalAmount()}.00
+          </Typography>
         </div>
       ) : (
         <Typography className={classes.title} variant="h6" gutterBottom>
