@@ -33,8 +33,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors().disable();
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests()
-                .antMatchers("/", "/favicon.ico", "/**/*.png", "/**/*.gif", "/**/*.svg", "/**/*.jpg", "/**/*.html",
-                        "/**/*.css", "/**/*.js", "/**/*.jsp", "/**/*.do")
+                .antMatchers("/")
                 .permitAll();
         http.headers().frameOptions().disable();
         http.addFilterBefore(new JwtConfig(), BasicAuthenticationFilter.class);

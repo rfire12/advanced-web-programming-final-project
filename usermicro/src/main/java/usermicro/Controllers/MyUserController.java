@@ -23,6 +23,7 @@ import usermicro.Entities.MyUser;
 import usermicro.Services.MyUserService;
 
 @RestController
+@RequestMapping("/user")
 public class MyUserController {
     @Autowired
     MyUserService userService;
@@ -60,7 +61,7 @@ public class MyUserController {
     }
 
     private String generateToken(MyUser user) {
-        String token = Jwts.builder().setId("softtekJWT").setSubject(user.getUsername()).claim("roles", user.getRoles())
+        String token = Jwts.builder().setId("outBestJWT").setSubject(user.getUsername()).claim("roles", user.getRoles())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 600000))
                 .signWith(SignatureAlgorithm.HS512, tokenKey.getBytes()).compact();

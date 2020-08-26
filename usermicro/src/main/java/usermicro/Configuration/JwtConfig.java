@@ -27,7 +27,7 @@ public class JwtConfig extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-        if (!request.getServletPath().equals("/hello") && !request.getServletPath().equals("/auth")
+        if (!request.getServletPath().equals("/user/hello") && !request.getServletPath().equals("/user/auth")
                 && !request.getServletPath().equals("/dbconsole")) {
             if (JWTExists(request, response)) {
                 Claims claims = validateToken(request);
@@ -51,14 +51,13 @@ public class JwtConfig extends OncePerRequestFilter {
     }
 
     private void setUpSpringAuthentication(Claims claims) {
-        List authorities = (List) claims.get("roles");
-        List<SimpleGrantedAuthority> listaAuto = new ArrayList<>();
-        listaAuto.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
-        listaAuto.add(new SimpleGrantedAuthority("ROLE_EMPLEADO"));
-        listaAuto.add(new SimpleGrantedAuthority("ROLE_CLIENTE"));
+        List<SimpleGrantedAuthority> authoritiesList = new ArrayList<>();
+        authoritiesList.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+        authoritiesList.add(new SimpleGrantedAuthority("ROLE_EMPLOYEE"));
+        authoritiesList.add(new SimpleGrantedAuthority("ROLE_CLIENT"));
 
         UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(claims.getSubject(), null,
-                listaAuto);
+                authoritiesList);
         SecurityContextHolder.getContext().setAuthentication(auth);
 
     }
