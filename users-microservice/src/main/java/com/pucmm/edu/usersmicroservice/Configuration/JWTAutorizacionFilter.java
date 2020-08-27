@@ -30,7 +30,7 @@ public class JWTAutorizacionFilter extends OncePerRequestFilter {
             try {
                 if (existeJWTToken(request, response)) {
                     final Claims claims = validateToken(request);
-                    if (claims.get("authorities") != null) {
+                    if (claims.get("role") != null) {
                         setUpSpringAuthentication(claims);
                     } else {
                         SecurityContextHolder.clearContext();
@@ -57,8 +57,6 @@ public class JWTAutorizacionFilter extends OncePerRequestFilter {
     }
 
     private void setUpSpringAuthentication(final Claims claims) {
-
-        final List authorities = (List) claims.get("roles");
         final List<SimpleGrantedAuthority> listaAuto = new ArrayList<>();
         listaAuto.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
 
