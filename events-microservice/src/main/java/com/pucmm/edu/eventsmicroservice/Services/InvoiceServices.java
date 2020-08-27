@@ -117,9 +117,9 @@ public class InvoiceServices {
 
     public void sendEmployeeEmail(Email from, InvoiceDTO invoice, SendGrid sendGrid) {
         String url = "http://localhost:8080/users-microservice/api/employees";
-        UserDTO[] responses = restTemplate.getForObject(url, UserDTO[].class);
-        assert responses != null;
-        for (UserDTO employee : responses) {
+        UserDTO[] employees = restTemplate.getForObject(url, UserDTO[].class);
+
+        for (UserDTO employee : employees) {
             Email to = new Email(employee.email);
             String subject = "New Job";
             String body = "The user: " + invoice.username + "has bought the following packages "
