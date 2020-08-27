@@ -15,10 +15,9 @@ export const getUser = () => {
   const token = getToken();
   try {
     return jwt_decode(token.slice(7));
-  } catch(e) {
+  } catch (e) {
     return {};
   }
-  
 };
 
 export const onLogin = (username, password) => {
@@ -33,7 +32,7 @@ export const onLogin = (username, password) => {
       password,
     }),
   };
-  
+
   fetch(url, params)
     .then((response) => response.json())
     .then((response) => {
@@ -44,25 +43,24 @@ export const onLogin = (username, password) => {
       } else {
         window.location.href = "/compras-realizadas";
       }
-      
     })
     .catch((e) => console.log(e));
 };
 
 export const onCreateUser = (user) => {
-  const url = `${HOST}/${USERSERVICE}/create`;
-  const username = `${user.name.charAt(0)}${user.lastname}${Math.floor(Math.random() * 1000) + 1}`;
+  const endpoint = user.role === "Client" ? "create-client" : "create";
+  const url = `${HOST}/${USERSERVICE}/${endpoint}`;
+  //const username = `${user.name.charAt(0)}${user.lastname}${Math.floor(Math.random() * 1000) + 1}`;
   const params = {
     method: "POST",
     headers: {
       "content-type": "application/json",
     },
-    body: JSON.stringify({ ...user, username }),
+    body: JSON.stringify(user),
   };
-
+  console.log(user);
 
   fetch(url, params)
-    .then((response) => response.json())
     .then((response) => {
       window.location.href = "/iniciar-sesion";
     })

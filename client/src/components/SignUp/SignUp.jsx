@@ -68,7 +68,7 @@ const SignUp = () => {
         </Typography>
         <form className={classes.form} noValidate>
           <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12} sm={12}>
               <TextField
                 autoComplete="fname"
                 name="name"
@@ -78,18 +78,6 @@ const SignUp = () => {
                 id="name"
                 label="Nombre"
                 autoFocus
-                onChange={addField}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="lastName"
-                label="Apellidos"
-                name="lastname"
-                autoComplete="lname"
                 onChange={addField}
               />
             </Grid>
@@ -104,6 +92,20 @@ const SignUp = () => {
                 autoComplete="email"
                 onChange={addField}
               />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                id="username"
+                label="Nombre de usuario"
+                name="username"
+                autoComplete="email"
+                onChange={addField}
+              />
+            </Grid>
+            <Grid item xs={12}>
               <TextField
                 variant="outlined"
                 margin="normal"
@@ -123,7 +125,7 @@ const SignUp = () => {
           </Button>
           <Grid container justify="flex-end">
             <Grid item>
-              <Link href="/iniciar-sesión" variant="body2">
+              <Link href="/iniciar-sesion" variant="body2">
                 ¿Ya tienes una cuenta? Inicia Sesión
               </Link>
             </Grid>

@@ -143,4 +143,16 @@ public class UsersController {
         return "Bearer " + token;
     }
 
+    @CrossOrigin
+    @PostMapping("create-client")
+    public ResponseEntity<String> createClient(@RequestBody UserDTO userRequest) {
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+        String password = bCryptPasswordEncoder.encode(userRequest.password);
+
+        usersServices
+                .save(new User(userRequest.username, userRequest.name, password, userRequest.email, userRequest.role));
+
+        return new ResponseEntity<>("Success", HttpStatus.CREATED);
+    }
+
 }
