@@ -1,8 +1,8 @@
 import jwt_decode from "jwt-decode";
 
 const USER = "user";
-const HOST = "https://localhost:8080";
-const USERSERVICE = "users-microservice";
+const HOST = "http://localhost:8080";
+const USERSERVICE = "users-microservice/api";
 const NOTIFICATIONSERVICE = "notifications-microservice";
 
 export const getJWT = () => {
@@ -12,18 +12,17 @@ export const getJWT = () => {
 const getToken = () => localStorage.getItem(USER);
 
 export const getUser = () => {
-  return (
-    localStorage.getItem(USER) || {
-      id: "123",
-      name: "Johns Doe",
-      email: "correo@correo.com",
-      userType: "client",
-    }
-  );
+  const token = getToken();
+  try {
+    return jwt_decode(token.slice(7));
+  } catch(e) {
+    return {};
+  }
+  
 };
 
 export const onLogin = (username, password) => {
-  const url = `${HOST}/${USERSERVICE}/login`;
+  const url = `${HOST}/${USERSERVICE}/auth`;
   const params = {
     method: "POST",
     headers: {
@@ -34,21 +33,20 @@ export const onLogin = (username, password) => {
       password,
     }),
   };
-  console.log(username);
-  console.log(password);
-  /*
+  
   fetch(url, params)
     .then((response) => response.json())
     .then((response) => {
-      localStorage.setItem(USER, response.data.user);
+      localStorage.setItem(USER, response.token);
       const user = getUser();
-      if (user.userType === "client") {
+      if (user.role === "Client") {
         window.location.href = "/productos";
       } else {
         window.location.href = "/compras-realizadas";
       }
+      
     })
-    .catch((e) => console.log(e));*/
+    .catch((e) => console.log(e));
 };
 
 export const onCreateUser = (user) => {

@@ -108,7 +108,7 @@ const Sidebar = ({ open = false, handleSidebarClose }) => {
           <IconButton onClick={handleSidebarClose}>{theme.direction === "ltr" ? <ChevronLeftIcon /> : <ChevronRightIcon />}</IconButton>
         </div>
         <Divider />
-        {user.userType === "client" && (
+        {user.role === "Client" && (
           <List>
             {clientsMenu.map((item, index) => (
               <ListItem button component="a" key={item.id} href={item.url}>
@@ -119,10 +119,10 @@ const Sidebar = ({ open = false, handleSidebarClose }) => {
           </List>
         )}
 
-        {(user.userType === "employee" || user.userType === "admin") && (
+        {(user.role === "Employee" || user.role === "Admin") && (
           <List>
             {employeesMenu.map((item, index) => {
-              if (item.url === "/crear-empleado" && user.userType !== "admin") {
+              if (item.url === "/crear-empleado" && user.role !== "Admin") {
                 return;
               }
               return (

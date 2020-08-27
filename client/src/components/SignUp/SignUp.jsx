@@ -50,7 +50,7 @@ const useStyles = makeStyles((theme) => ({
 const SignUp = () => {
   const classes = useStyles();
 
-  const [user, setUser] = React.useState({ userType: "client" });
+  const [user, setUser] = React.useState({ role: "Client" });
 
   const addField = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });

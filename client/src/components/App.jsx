@@ -68,37 +68,37 @@ const App = () => {
             [classes.containerShift]: sidebarStatus,
           })}
         >
-          {user.userType === "client" && (
+          {user.role === "Client" && (
             <Route path="/productos">
               <Products />
             </Route>
           )}
 
-          {user.userType === "client" && (
+          {user.role === "Client" && (
             <Route path="/historial-compras">
               <OrdersHistory />
             </Route>
           )}
 
-          {(user.userType === "employee" || user.userType === "admin") && (
+          {(user.role === "Employee" || user.role === "Admin") && (
             <Route path="/solicitudes-pendientes">
               <PendingOrders />
             </Route>
           )}
 
-          {(user.userType === "employee" || user.userType === "admin") && (
+          {(user.role === "Employee" || user.role === "Admin") && (
             <Route path="/compras-realizadas">
               <AllOrdersHistory />
             </Route>
           )}
 
-          {(user.userType === "employee" || user.userType === "admin") && (
+          {(user.role === "Employee" || user.role === "Admin") && (
             <Route path="/graficos">
               <Charts />
             </Route>
           )}
 
-          {user.userType === "admin" && (
+          {user.role === "Admin" && (
             <Route path="/crear-empleado">
               <SignUpEmployee />
             </Route>

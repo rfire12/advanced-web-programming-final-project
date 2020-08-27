@@ -133,6 +133,9 @@ public class UsersController {
     private String generarToken(User user) {
 
         String token = Jwts.builder().setId("softtekJWT").setSubject(user.getName()).claim("role", user.getRole())
+                .claim("username", user.getUsername())
+                .claim("name", user.getName())
+                .claim("email", user.getEmail())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 3600000))
                 .signWith(SignatureAlgorithm.HS512, secretKey.getBytes()).compact();
