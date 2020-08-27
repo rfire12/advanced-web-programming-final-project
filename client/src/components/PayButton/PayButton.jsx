@@ -23,15 +23,14 @@ const PayButton = ({ amount, cart = [] }) => {
         products: ids,
         total: amount,
         username: user.username,
-        productsNames
+        productsNames,
       }),
     };
 
     fetch(url, params)
-      .then((response) => response.json())
       .then((response) => {
-       console.log(response);
-        //window.location.href = "/historial-compras";
+        alert("Gracias por su compra");
+        setTimeout(() => (window.location.href = "/historial-compras"), 0);
       })
       .catch((e) => console.log(e));
   };

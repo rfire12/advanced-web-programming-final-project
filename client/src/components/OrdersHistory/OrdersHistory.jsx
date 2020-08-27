@@ -6,7 +6,7 @@ import { getUser } from "../../helpers/helpers";
 const OrdersHistory = () => {
   const fields = ["date", "products", "status", "total"];
 
-  const head = { date: "Fecha", productsNames: "Productos", total: "Total" };
+  const head = { date: "Fecha", products: "Productos", total: "Total" };
 
   const [data, setData] = React.useState([]);
 
@@ -29,7 +29,6 @@ const OrdersHistory = () => {
       .then((response) => {
         const products = response.map((prod) => ({ ...prod, products: prod.productsNames.join(', ') }));
         setData(products);
-        console.log(response);
       })
       .catch((e) => console.log(e));
   };

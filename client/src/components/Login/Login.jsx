@@ -12,7 +12,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import { onLogin } from '../../helpers/helpers';
+import { onLogin, getUser } from '../../helpers/helpers';
 
 function Copyright() {
   return (
@@ -47,11 +47,23 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+
+
 const Login = () => {
   const classes = useStyles();
 
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
+
+  React.useEffect(() => {
+    const user = getUser();
+    if( user.role === "Client" ) {
+      window.location.href = "/productos";
+    } else if ( user.role === "Employee" || user.role === "Admin" ) {
+      window.location.href = "/compras-realizadas";
+    }
+  
+  }, []);
 
   return (
     <Container component="main" maxWidth="xs">
@@ -70,7 +82,7 @@ const Login = () => {
             required
             fullWidth
             id="email"
-            label="Direccion de correo"
+            label="Usuario"
             name="email"
             autoComplete="email"
             onChange={(e)=> setUsername(e.target.value)}
