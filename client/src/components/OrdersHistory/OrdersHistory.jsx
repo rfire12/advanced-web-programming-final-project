@@ -8,6 +8,27 @@ const OrdersHistory = () => {
 
   const [data, setData] = React.useState([]);
 
+  const HOST = "https://localhost:8080";
+  const EVENTSERVICE = "events-microservice";
+
+  const getData = () => {
+    const url = `${HOST}/${EVENTSERVICE}/`;
+    const params = {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        Authorization: getJWT(),
+      },
+    };
+
+    fetch(url, params)
+      .then((response) => response.json())
+      .then((response) => {
+        setData(response.data)
+      })
+      .catch((e) => console.log(e));
+  };
+
   React.useEffect(() => {
     const newData = [
       createData(0, "16 Mar, 2019", "Elvis Presley", "Tupelo, MS", 312.44),

@@ -12,6 +12,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import { onLogin } from '../../helpers/helpers';
 
 function Copyright() {
   return (
@@ -49,6 +50,9 @@ const useStyles = makeStyles((theme) => ({
 const Login = () => {
   const classes = useStyles();
 
+  const [username, setUsername] = React.useState("");
+  const [password, setPassword] = React.useState("");
+
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -69,6 +73,7 @@ const Login = () => {
             label="Direccion de correo"
             name="email"
             autoComplete="email"
+            onChange={(e)=> setUsername(e.target.value)}
             autoFocus
           />
           <TextField
@@ -81,17 +86,15 @@ const Login = () => {
             type="password"
             id="password"
             autoComplete="current-password"
+            onChange={(e)=> setPassword(e.target.value)}
           />
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Recordarme"
-          />
+
           <Button
-            type="submit"
             fullWidth
             variant="contained"
             color="primary"
             className={classes.submit}
+            onClick={() => onLogin(username, password)}
           >
             Acceder
           </Button>
