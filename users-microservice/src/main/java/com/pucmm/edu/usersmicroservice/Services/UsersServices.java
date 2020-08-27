@@ -24,8 +24,7 @@ public class UsersServices {
             admin.setPassword(bCryptPasswordEncoder.encode("admin"));
             admin.setEmail("admin@example.com");
             admin.setName("Admin");
-            admin.setRoles(Arrays.asList("ROLE_ADMIN"));
-            admin.setAdmin(true);
+            admin.setRole("Admin");
 
             usersRepository.save(admin);
         }
@@ -37,8 +36,6 @@ public class UsersServices {
 
     public void update(String username, User user) {
         User entity = usersRepository.findByUsername(username);
-        entity.setAdmin(user.isAdmin());
-        entity.setUsername(user.getUsername());
         entity.setEmail(user.getEmail());
         entity.setName(user.getName());
         usersRepository.save(entity);

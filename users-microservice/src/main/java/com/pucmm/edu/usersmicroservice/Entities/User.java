@@ -1,10 +1,6 @@
 package com.pucmm.edu.usersmicroservice.Entities;
 
-import java.util.List;
-
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
 
 @Entity
@@ -14,9 +10,18 @@ public class User {
     private String name;
     private String password;
     private String email;
-    @ElementCollection(targetClass = String.class, fetch = FetchType.EAGER)
-    List<String> roles;
-    boolean isAdmin;
+    private String role;
+
+    public User() {
+    }
+
+    public User(String username, String name, String password, String email, String role) {
+        this.username = username;
+        this.name = name;
+        this.password = password;
+        this.email = email;
+        this.role = role;
+    }
 
     public String getUsername() {
         return username;
@@ -50,31 +55,11 @@ public class User {
         this.email = email;
     }
 
-    public List<String> getRoles() {
-        return roles;
+    public String getRole() {
+        return role;
     }
 
-    public void setRoles(List<String> roles) {
-        this.roles = roles;
-    }
-
-    public boolean isAdmin() {
-        return isAdmin;
-    }
-
-    public void setAdmin(boolean isAdmin) {
-        this.isAdmin = isAdmin;
-    }
-
-    public User(String username, String name, String password, String email, List<String> roles, boolean isAdmin) {
-        this.username = username;
-        this.name = name;
-        this.password = password;
-        this.email = email;
-        this.roles = roles;
-        this.isAdmin = isAdmin;
-    }
-
-    public User() {
+    public void setRole(String role) {
+        this.role = role;
     }
 }

@@ -19,16 +19,14 @@ public class SecurityServices implements UserDetailsService {
     UsersRepository usersRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String username){
+    public UserDetails loadUserByUsername(String username) {
         User user = usersRepository.findByUsername(username);
 
         Set<GrantedAuthority> roles = new HashSet<GrantedAuthority>();
-        for (String role : user.getRoles()) {
-            roles.add(new SimpleGrantedAuthority(role));
-        }
-
+        roles.add(new SimpleGrantedAuthority(user.getRole()));
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>(roles);
 
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), true, true, true, true, grantedAuthorities);
+        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), true,
+                true, true, true, grantedAuthorities);
     }
 }

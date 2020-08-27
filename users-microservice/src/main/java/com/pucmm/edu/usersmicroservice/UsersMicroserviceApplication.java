@@ -12,8 +12,8 @@ import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.Bean;
 
-// @EnableDiscoveryClient
-// @EnableCircuitBreaker
+@EnableDiscoveryClient
+@EnableCircuitBreaker
 @SpringBootApplication
 public class UsersMicroserviceApplication {
 	@Autowired
