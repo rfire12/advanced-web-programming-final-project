@@ -73,8 +73,9 @@ const Products = () => {
     fetch(url, params)
       .then((response) => response.json())
       .then((response) => {
-        const prodWithImages = response.map((prod, index) => ({ ...prod, image: images[index] }));
         console.log(response);
+        const prodWithImages = response.map((prod, index) => ({ ...prod, image: images[index] }));
+        
         setProductsList(prodWithImages);
       })
       .catch((e) => console.log(e));
