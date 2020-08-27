@@ -27,7 +27,11 @@ const OrdersHistory = () => {
     fetch(url, params)
       .then((response) => response.json())
       .then((response) => {
-        const products = response.map((prod) => ({ ...prod, products: prod.productsNames.join(', ') }));
+        const products = response.map((prod) => ({
+          ...prod,
+          total: `RD$${Math.round((prod.total * 58) / 1000) * 1000}.00`,
+          products: prod.productsNames.join(", "),
+        }));
         setData(products);
       })
       .catch((e) => console.log(e));
