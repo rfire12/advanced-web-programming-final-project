@@ -6,6 +6,7 @@ import Typography from "@material-ui/core/Typography";
 import Fade from "@material-ui/core/Fade";
 import { CartesianGrid } from "recharts";
 import PayButton from "../PayButton/PayButton";
+import { getToken } from "../../helpers/helpers";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -29,9 +30,16 @@ const useStyles = makeStyles((theme) => ({
 
 const Products = () => {
   const classes = useStyles();
+  const HOST = "http://localhost:8080";
+  const ENVENTSERVICE = "events-microservice/api";
 
   const [cart, setCart] = React.useState([]);
   const [paidFor, setPaidFor] = React.useState(false);
+  const [productsList, setProductsList] = React.useState([]);
+
+  React.useEffect(() => {
+    getProductList();
+  }, []);
 
   const addToCart = (product) => {
     setCart((prevState) => [...prevState, product]);
@@ -49,12 +57,31 @@ const Products = () => {
     setCart(newCart);
   };
 
-  const productsList = [
-    { id: 1, name: "Pre-Boda", image: "../../assets/pre-wedding.jpg", price: 1000 },
-    { id: 2, name: "Boda", image: "../../assets/wedding.jpg", price: 5000 },
-    { id: 3, name: "Cumpleaños", image: "../../assets/birthday.jpg", price: 3000 },
-    { id: 4, name: "Video de evento", image: "../../assets/video-event.jpg", price: 4000 },
-  ];
+  const images = ["../../assets/pre-wedding.jpg", "../../assets/wedding.jpg", "../../assets/birthday.jpg", "../../assets/video-event.jpg"];
+
+  const getProductList = () => {
+    const url = `${HOST}/${ENVENTSERVICE}/products`;
+
+    const params = {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        Authorization: getToken(),
+      },
+    };
+
+    fetch(url, params)
+      .then((response) => response.json())
+      .then((response) => {
+        console.log(response);
+        const prodWithImages = response.map((prod, index) => ({ ...prod, image: images[index] }));
+        
+        setProductsList(prodWithImages);
+      })
+      .catch((e) => console.log(e));
+  };
+
+
 
   const paymentButtonVisibility = cart.length === 0 ? `${classes.paymentButton} ${classes.hidePaymentButton}` : classes.paymentButton;
 
@@ -71,7 +98,7 @@ const Products = () => {
             </div>
           ))}
           <div className={paymentButtonVisibility}>
-            <PayButton amount={getTotalAmount()} />
+            <PayButton amount={getTotalAmount()} cart={cart} />
           </div>
           <Typography className={classes.title} variant="h6" gutterBottom>
             Total Pesos: RD${Math.round((getTotalAmount() * 58) / 1000) * 1000}.00

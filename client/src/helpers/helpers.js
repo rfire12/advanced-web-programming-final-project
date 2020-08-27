@@ -4,12 +4,16 @@ const USER = "user";
 const HOST = "http://localhost:8080";
 const USERSERVICE = "users-microservice/api";
 const NOTIFICATIONSERVICE = "notifications-microservice";
-
+/*
 export const getJWT = () => {
   return "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEyMyIsIm5hbWUiOiJKb2hucyBEb2UiLCJlbWFpbCI6ImNvcnJlb0Bjb3JyZW8uY29tIiwidXNlclR5cGUiOiJjbGllbnQifQ.gG9Gnxb3XIItO9o7GSysJE-E-qE7fwCwJu-Lv8x4eLQ";
-};
+};*/
 
-const getToken = () => localStorage.getItem(USER);
+export const getToken = () => localStorage.getItem(USER);
+
+export const removeToken = () => {
+  localStorage.removeItem(USER);
+};
 
 export const getUser = () => {
   const token = getToken();
@@ -49,12 +53,15 @@ export const onLogin = (username, password) => {
 
 export const onCreateUser = (user) => {
   const endpoint = user.role === "Client" ? "create-client" : "create";
+  const autorization = user.role === "Client" ? {} : { Authorization: getToken() };
   const url = `${HOST}/${USERSERVICE}/${endpoint}`;
+
   //const username = `${user.name.charAt(0)}${user.lastname}${Math.floor(Math.random() * 1000) + 1}`;
   const params = {
     method: "POST",
     headers: {
       "content-type": "application/json",
+      ...autorization,
     },
     body: JSON.stringify(user),
   };
@@ -62,7 +69,12 @@ export const onCreateUser = (user) => {
 
   fetch(url, params)
     .then((response) => {
-      window.location.href = "/iniciar-sesion";
+      if (user.role === "Client") {
+        window.location.href = "/iniciar-sesion";
+      } else {
+        alert("Usuario creado");
+        //window.location.href = "/compras-realizadas";
+      }
     })
     .catch((e) => console.log(e));
 };

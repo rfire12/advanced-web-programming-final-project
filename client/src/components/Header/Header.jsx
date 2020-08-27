@@ -13,6 +13,7 @@ import AccountCircle from "@material-ui/icons/AccountCircle";
 import MailIcon from "@material-ui/icons/Mail";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import Sidebar from "./Sidebar";
+import { removeToken } from "../../helpers/helpers";
 
 const drawerWidth = 240;
 
@@ -94,6 +95,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const closeSession = () => {
+  removeToken();
+  window.location.href = "/iniciar-sesion";
+};
+
 const Header = ({ sidebarStatus = false, handleSidebarOpen, handleSidebarClose }) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -126,7 +132,7 @@ const Header = ({ sidebarStatus = false, handleSidebarOpen, handleSidebarClose }
       onClose={handleMenuClose}
     >
       <MenuItem onClick={handleMenuClose}>Mi perfil</MenuItem>
-      <MenuItem onClick={handleMenuClose}>Cerrar Sesión</MenuItem>
+      <MenuItem onClick={closeSession}>Cerrar Sesión</MenuItem>
     </Menu>
   );
 
