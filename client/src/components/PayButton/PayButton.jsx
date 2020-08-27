@@ -10,6 +10,7 @@ const PayButton = ({ amount, cart = [] }) => {
   const onPayment = () => {
     const url = `${HOST}/${ENVENTSERVICE}/invoice`;
     const ids = cart.map((product) => product.id);
+    const productsNames = cart.map((product) => product.name);
     const user = getUser();
 
     const params = {
@@ -21,7 +22,8 @@ const PayButton = ({ amount, cart = [] }) => {
       body: JSON.stringify({
         products: ids,
         total: amount,
-        username: user.username
+        username: user.username,
+        productsNames
       }),
     };
 
