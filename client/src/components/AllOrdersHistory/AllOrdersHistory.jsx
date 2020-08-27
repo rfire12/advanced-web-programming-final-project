@@ -1,6 +1,6 @@
 import React from "react";
 import Table from "../Table/Table";
-import { getJWT } from "../../helpers/helpers";
+import { getUser } from "../../helpers/helpers";
 
 const AllOrdersHistory = () => {
   const fields = ["date", "products", "status", "amount"];
@@ -30,12 +30,12 @@ const AllOrdersHistory = () => {
   }
 
   const getData = () => {
-    const url = `${HOST}/${EVENTSERVICE}/`;
+    const user = getUser();
+    const url = `${HOST}/${EVENTSERVICE}/invoices/${user.username}`;
     const params = {
       method: "GET",
       headers: {
         Accept: "application/json",
-        Authorization: getJWT(),
       },
     };
 
