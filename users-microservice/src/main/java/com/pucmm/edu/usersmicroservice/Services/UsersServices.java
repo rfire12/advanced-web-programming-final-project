@@ -1,9 +1,12 @@
 package com.pucmm.edu.usersmicroservice.Services;
 
+import java.util.Arrays;
+
 import com.pucmm.edu.usersmicroservice.Entities.User;
 import com.pucmm.edu.usersmicroservice.Repositories.UsersRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -11,10 +14,20 @@ public class UsersServices {
     @Autowired
     UsersRepository usersRepository;
 
+    BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+
     public void createAdmin() {
         if (usersRepository.findByUsername("admin") == null) {
-            User user = new User("admin", "Admin", "admin", "admin@example.com", "admin");
-            usersRepository.save(user);
+            User admin = new User();
+
+            admin.setUsername("admin");
+            admin.setPassword(bCryptPasswordEncoder.encode("admin"));
+            admin.setEmail("admin@example.com");
+            admin.setName("Admin");
+            admin.setRoles(Arrays.asList("ROLE_ADMIN"));
+            admin.setAdmin(true);
+
+            usersRepository.save(admin);
         }
     }
 
@@ -22,7 +35,12 @@ public class UsersServices {
         usersRepository.save(user);
     }
 
-    public void edit(String username) {
-        usersRepository.findByUsername(username);
+    public void update(String username, User user) {
+        User entity = usersRepository.findByUsername(username);
+        entity.setAdmin(user.isAdmin());
+        entity.setUsername(user.getUsername());
+        entity.setEmail(user.getEmail());
+        entity.setName(user.getName());
+        usersRepository.save(entity);
     }
 }

@@ -12,17 +12,15 @@ import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.Bean;
 
-@EnableDiscoveryClient
-@EnableCircuitBreaker
+// @EnableDiscoveryClient
+// @EnableCircuitBreaker
 @SpringBootApplication
 public class UsersMicroserviceApplication {
 	@Autowired
 	UsersServices usersServices;
 
 	public static void main(String[] args) {
-		SpringApplication app = new SpringApplication(UsersMicroserviceApplication.class);
-		app.setDefaultProperties(Collections.singletonMap("server.port", "0"));
-		app.run(args);
+		SpringApplication.run(UsersMicroserviceApplication.class, args);
 	}
 
 	@Bean

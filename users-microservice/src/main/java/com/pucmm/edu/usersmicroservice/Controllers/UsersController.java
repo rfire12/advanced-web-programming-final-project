@@ -9,11 +9,10 @@ import com.pucmm.edu.usersmicroservice.Entities.User;
 import com.pucmm.edu.usersmicroservice.Repositories.UsersRepository;
 import com.pucmm.edu.usersmicroservice.Services.UsersServices;
 
-import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -39,7 +38,16 @@ public class UsersController {
     @CrossOrigin
     @GetMapping("employees")
     public ArrayList<User> listEmployees() {
-        ArrayList<User> employees = usersRepository.findAllByUserType("employee");
+        List<User> users = usersRepository.findAll();
+
+        ArrayList<User> employees = new ArrayList<>();
+
+        for(User u : users){
+            if(u.getRoles().contains("ROLE_EMPLOYEE")){
+                employees.add(u);
+            }
+        }
+
         return employees;
     }
 
@@ -53,17 +61,19 @@ public class UsersController {
     @CrossOrigin
     @PostMapping("create")
     public ResponseEntity<String> create(@RequestBody User userRequest) {
-        String password = DigestUtils.md5Hex(userRequest.getPassword());
-        User user = new User(userRequest.getUsername(), userRequest.getName(), password, userRequest.getEmail(),
-                userRequest.getUserType());
-        usersServices.save(user);
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+        String password = bCryptPasswordEncoder.encode(userRequest.getPassword());
+
+        usersServices.save(new User(userRequest.getUsername(), userRequest.getName(), password, userRequest.getEmail(),
+                userRequest.getRoles(), false));
+
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @CrossOrigin
-    @RequestMapping("update")
-    public ResponseEntity<String> editarUsuario(@RequestParam String username) {
-        usersServices.edit(username);
+    @RequestMapping("update/{username}")
+    public ResponseEntity<String> editarUsuario(@RequestBody User user, @RequestParam String username) {
+        usersServices.update(username, user);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }
