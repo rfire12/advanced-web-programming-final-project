@@ -41,8 +41,8 @@ public class ProductServices {
         }
     }
 
-    public Product getProduct(String name) {
-        Product product = productsRepository.findByName(name);
+    public Product getProduct(Long id) {
+        Product product = productsRepository.findById(id).get();
         return product;
     }
 }

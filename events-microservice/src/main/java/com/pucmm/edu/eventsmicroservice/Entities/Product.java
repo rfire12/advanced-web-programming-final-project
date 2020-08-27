@@ -2,16 +2,10 @@ package com.pucmm.edu.eventsmicroservice.Entities;
 
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
-
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import javax.persistence.ManyToMany;
 
 @Entity
 public class Product {
@@ -22,7 +16,7 @@ public class Product {
     private String name;
     private float price;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "products")
     private Set<Invoice> invoices;
 
     public Product(String name, float price) {

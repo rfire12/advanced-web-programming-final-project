@@ -3,10 +3,13 @@ package com.pucmm.edu.eventsmicroservice.Services;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
 import com.sendgrid.*;
 
-import com.pucmm.edu.eventsmicroservice.DTO.InvoiceResponse;
+import com.pucmm.edu.eventsmicroservice.DTO.InvoiceDTO;
 import com.pucmm.edu.eventsmicroservice.DTO.UserDTO;
 import com.pucmm.edu.eventsmicroservice.Entities.Invoice;
 import com.pucmm.edu.eventsmicroservice.Entities.Product;
@@ -27,56 +30,76 @@ public class InvoiceServices {
     @Autowired
     ProductServices productServices;
 
-    public void createInvoice(InvoiceResponse invoice) {
-        Product product = productServices.getProduct(invoice.product);
-        Invoice newInvoice = new Invoice(invoice.total, invoice.username, new Date(), product);
+    public void createInvoice(InvoiceDTO request) {
+        Set<Product> products = new HashSet<>();
+
+        for (Long id : request.products) {
+            products.add(productServices.getProduct(id));
+        }
+        Invoice newInvoice = new Invoice(request.total, request.username, new Date(), products);
         invoicesRepository.save(newInvoice);
     }
 
-    public List<InvoiceResponse> getInvoices() {
+    public List<InvoiceDTO> getInvoices() {
         List<Invoice> invoices = invoicesRepository.findAll();
-        List<InvoiceResponse> response = new ArrayList<>();
+        List<InvoiceDTO> response = new ArrayList<>();
         for (Invoice invoice : invoices) {
-            InvoiceResponse irep = new InvoiceResponse();
+            InvoiceDTO irep = new InvoiceDTO();
             irep.total = invoice.getTotal();
-            irep.product = invoice.getProduct().getName();
+
+            Set<Product> products = invoice.getProducts();
+            List<String> productNames = new ArrayList<>();
+
+            for (Product product : products) {
+                productNames.add(product.getName());
+            }
+
+            irep.productsNames = productNames;
             irep.username = invoice.getUsername();
             response.add(irep);
         }
         return response;
     }
 
-    public List<InvoiceResponse> getInvoicesByUsername(String username) {
+    public List<InvoiceDTO> getInvoicesByUsername(String username) {
         List<Invoice> invoices = invoicesRepository.findAllByUsername(username);
-        List<InvoiceResponse> response = new ArrayList<>();
+        List<InvoiceDTO> response = new ArrayList<>();
         for (Invoice invoice : invoices) {
-            InvoiceResponse irep = new InvoiceResponse();
+            InvoiceDTO irep = new InvoiceDTO();
             irep.total = invoice.getTotal();
-            irep.product = invoice.getProduct().getName();
+
+            Set<Product> products = invoice.getProducts();
+            List<String> productNames = new ArrayList<>();
+
+            for (Product product : products) {
+                productNames.add(product.getName());
+            }
+
+            irep.productsNames = productNames;
             irep.username = invoice.getUsername();
             response.add(irep);
         }
         return response;
     }
 
-    public void sendInvoiceEmail(InvoiceResponse invoiceResponse) throws IOException {
+    public void sendInvoiceEmail(InvoiceDTO invoice) throws IOException {
         Email from = new Email("20160290@ce.pucmm.edu.do");
         String subject = "You've bought a product";
         String apiKey = "HERE GOES THE API KEY";
-        String url = "http://localhost:8080/users-microservice/api/search?username=" + invoiceResponse.username;
+        String url = "http://localhost:8080/users-microservice/api/search?username=" + invoice.username;
 
         UserDTO userDto = restTemplate.getForObject(url, UserDTO.class);
 
         Email to = new Email(userDto.email);
 
-        String body = "Hello " + invoiceResponse.username + "\n\nYour package " + invoiceResponse.product
+        String body = "Hello " + invoice.username + "\n\nYour packages: " + String.join(", ", invoice.productsNames)
                 + " has been paid successfully.";
         Content content = new Content("text/plain", body);
         Mail mail = new Mail(from, subject, to, content);
         SendGrid sendGrid = new SendGrid(apiKey);
         Request request = new Request();
 
-        sendEmployeeEmail(from, invoiceResponse, sendGrid);
+        sendEmployeeEmail(from, invoice, sendGrid);
 
         try {
             request.setMethod(Method.POST);
@@ -90,14 +113,15 @@ public class InvoiceServices {
 
     }
 
-    public void sendEmployeeEmail(Email from, InvoiceResponse invoiceResponse, SendGrid sendGrid) {
+    public void sendEmployeeEmail(Email from, InvoiceDTO invoice, SendGrid sendGrid) {
         String url = "http://localhost:8080/users-microservice/api/employees";
         UserDTO[] responses = restTemplate.getForObject(url, UserDTO[].class);
         assert responses != null;
         for (UserDTO employee : responses) {
             Email to = new Email(employee.email);
             String subject = "New Job";
-            String body = "The user: " + invoiceResponse.username + "has bought the package " + invoiceResponse.product;
+            String body = "The user: " + invoice.username + "has bought the following packages "
+                    + String.join(", ", invoice.productsNames);
             Content content = new Content("text/plain", body);
             Mail mail = new Mail(from, subject, to, content);
             Request request = new Request();

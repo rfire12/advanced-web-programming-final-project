@@ -6,8 +6,8 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.pucmm.edu.eventsmicroservice.DTO.InvoiceResponse;
-import com.pucmm.edu.eventsmicroservice.DTO.ProductResponse;
+import com.pucmm.edu.eventsmicroservice.DTO.InvoiceDTO;
+import com.pucmm.edu.eventsmicroservice.DTO.ProductDTO;
 import com.pucmm.edu.eventsmicroservice.Entities.Product;
 import com.pucmm.edu.eventsmicroservice.Repositories.ProductsRepository;
 import com.pucmm.edu.eventsmicroservice.Services.InvoiceServices;
@@ -40,7 +40,7 @@ public class MainController {
 
     @CrossOrigin
     @PostMapping("invoice")
-    public ResponseEntity<String> createInvoice(@RequestBody InvoiceResponse invoice) throws IOException {
+    public ResponseEntity<String> createInvoice(@RequestBody InvoiceDTO invoice) throws IOException {
         invoiceServices.createInvoice(invoice);
         invoiceServices.sendInvoiceEmail(invoice);
         return new ResponseEntity<>("Success", HttpStatus.CREATED);
@@ -48,11 +48,11 @@ public class MainController {
 
     @CrossOrigin
     @GetMapping("products")
-    public ArrayList<ProductResponse> getProducts() {
+    public ArrayList<ProductDTO> getProducts() {
         List<Product> products = productsRepository.findAll();
-        ArrayList<ProductResponse> misProductos = new ArrayList<>();
+        ArrayList<ProductDTO> misProductos = new ArrayList<>();
         for (Product prod : products) {
-            ProductResponse pResponse = new ProductResponse();
+            ProductDTO pResponse = new ProductDTO();
             pResponse.price = prod.getPrice();
             pResponse.name = prod.getName();
             misProductos.add(pResponse);
@@ -62,13 +62,13 @@ public class MainController {
 
     @CrossOrigin
     @GetMapping("invoices")
-    public List<InvoiceResponse> getInvoices() {
+    public List<InvoiceDTO> getInvoices() {
         return invoiceServices.getInvoices();
     }
 
     @CrossOrigin
     @GetMapping("invoices/client")
-    public List<InvoiceResponse> getInvoicesByClient(@RequestParam String username) {
+    public List<InvoiceDTO> getInvoicesByClient(@RequestParam String username) {
         return invoiceServices.getInvoicesByUsername(username);
     }
 }

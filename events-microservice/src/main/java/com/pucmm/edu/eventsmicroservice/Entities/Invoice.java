@@ -1,13 +1,15 @@
 package com.pucmm.edu.eventsmicroservice.Entities;
 
 import java.util.Date;
+import java.util.Set;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 
 @Entity
 public class Invoice {
@@ -18,14 +20,19 @@ public class Invoice {
     private String username;
     private Date date;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Product product;
+    @ManyToMany
+    @JoinTable(
+        name = "product_invoice",
+        joinColumns = @JoinColumn(name = "invoice_id"),
+        inverseJoinColumns = @JoinColumn(name = "product_id")
+    )
+    private Set<Product> products;
 
-    public Invoice(float total, String username, Date date, Product product) {
+    public Invoice(float total, String username, Date date, Set<Product> products) {
         this.total = total;
         this.username = username;
         this.date = date;
-        this.product = product;
+        this.products = products;
     }
 
     public Invoice() {
@@ -63,13 +70,12 @@ public class Invoice {
         this.date = date;
     }
 
-    public Product getProduct() {
-        return product;
+    public Set<Product> getProducts() {
+        return products;
     }
 
-    public void setProduct(Product product) {
-        this.product = product;
+    public void setProducts(Set<Product> products) {
+        this.products = products;
     }
 
-    
 }
