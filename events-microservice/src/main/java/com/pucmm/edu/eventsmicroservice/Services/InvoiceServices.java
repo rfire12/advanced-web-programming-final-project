@@ -54,6 +54,7 @@ public class InvoiceServices {
                 productNames.add(product.getName());
             }
 
+            irep.id = invoice.getId();
             irep.productsNames = productNames;
             irep.username = invoice.getUsername();
             response.add(irep);
@@ -75,6 +76,7 @@ public class InvoiceServices {
                 productNames.add(product.getName());
             }
 
+            irep.id = invoice.getId();
             irep.productsNames = productNames;
             irep.username = invoice.getUsername();
             response.add(irep);
