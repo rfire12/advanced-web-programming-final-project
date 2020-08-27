@@ -71,7 +71,7 @@ const Products = () => {
             </div>
           ))}
           <div className={paymentButtonVisibility}>
-            <PayButton amount={getTotalAmount()} />
+            <PayButton amount={getTotalAmount()} cart={cart} />
           </div>
           <Typography className={classes.title} variant="h6" gutterBottom>
             Total Pesos: RD${Math.round((getTotalAmount() * 58) / 1000) * 1000}.00

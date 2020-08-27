@@ -67,30 +67,18 @@ const SignUp = () => {
           Registrar empleado
         </Typography>
         <form className={classes.form} noValidate>
-          <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
+        <Grid container spacing={2}>
+            <Grid item xs={12} sm={12}>
               <TextField
                 autoComplete="fname"
                 name="name"
                 variant="outlined"
                 required
                 fullWidth
-                id="firstName"
+                id="name"
                 label="Nombre"
-                onChange={addField}
                 autoFocus
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="lastName"
-                label="Apellidos"
-                name="lastname"
                 onChange={addField}
-                autoComplete="lname"
               />
             </Grid>
             <Grid item xs={12}>
@@ -101,8 +89,34 @@ const SignUp = () => {
                 id="email"
                 label="Correo Electrónico"
                 name="email"
-                onChange={addField}
                 autoComplete="email"
+                onChange={addField}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                id="username"
+                label="Nombre de usuario"
+                name="username"
+                autoComplete="email"
+                onChange={addField}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                name="password"
+                label="Password"
+                type="password"
+                id="password"
+                autoComplete="current-password"
+                onChange={addField}
               />
             </Grid>
           </Grid>

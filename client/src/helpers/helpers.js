@@ -49,12 +49,15 @@ export const onLogin = (username, password) => {
 
 export const onCreateUser = (user) => {
   const endpoint = user.role === "Client" ? "create-client" : "create";
+  const autorization = user.role === "Client" ? {} : { Authorization: getToken() };
   const url = `${HOST}/${USERSERVICE}/${endpoint}`;
+
   //const username = `${user.name.charAt(0)}${user.lastname}${Math.floor(Math.random() * 1000) + 1}`;
   const params = {
     method: "POST",
     headers: {
       "content-type": "application/json",
+      ...autorization,
     },
     body: JSON.stringify(user),
   };
@@ -62,7 +65,12 @@ export const onCreateUser = (user) => {
 
   fetch(url, params)
     .then((response) => {
-      window.location.href = "/iniciar-sesion";
+      if (user.role === "Client") {
+        window.location.href = "/iniciar-sesion";
+      } else {
+        alert("Usuario creado");
+        //window.location.href = "/compras-realizadas";
+      }
     })
     .catch((e) => console.log(e));
 };
