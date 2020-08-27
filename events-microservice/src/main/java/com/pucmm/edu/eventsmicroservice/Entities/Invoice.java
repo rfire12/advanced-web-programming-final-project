@@ -2,12 +2,14 @@ package com.pucmm.edu.eventsmicroservice.Entities;
 
 import java.util.Date;
 
+import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+@Entity
 public class Invoice {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)

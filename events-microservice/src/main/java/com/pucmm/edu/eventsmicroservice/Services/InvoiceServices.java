@@ -76,7 +76,6 @@ public class InvoiceServices {
         SendGrid sendGrid = new SendGrid(apiKey);
         Request request = new Request();
 
-        // Enviando correo a todos los empleados
         sendEmployeeEmail(from, invoiceResponse, sendGrid);
 
         try {
