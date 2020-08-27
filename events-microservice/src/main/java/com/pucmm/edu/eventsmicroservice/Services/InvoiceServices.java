@@ -97,7 +97,7 @@ public class InvoiceServices {
         Email to = new Email(userDto.email);
 
         String body = "Hello " + invoice.username + "\n\nYour packages: " + String.join(", ", invoice.productsNames)
-                + " has been paid successfully.";
+                + " has been paid successfully." + "\n\nTotal: " + String.format("%s", invoice.total);
         Content content = new Content("text/plain", body);
         Mail mail = new Mail(from, subject, to, content);
         SendGrid sendGrid = new SendGrid(apiKey);
