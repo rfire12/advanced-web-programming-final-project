@@ -16,11 +16,11 @@ const PendingOrders = () => {
 
   React.useEffect(() => {
     const newData = [
-      createData(0, "16 Mar, 2019", "Elvis Presley", "Tupelo, MS", 312.44),
-      createData(1, "16 Mar, 2019", "Paul McCartney", "London, UK", 866.99),
-      createData(2, "16 Mar, 2019", "Tom Scholz", "Boston, MA", 100.81),
-      createData(3, "16 Mar, 2019", "Michael Jackson", "Gary, IN", 654.39),
-      createData(4, "15 Mar, 2019", "Bruce Springsteen", "Long Branch, NJ", 212.79),
+      createData(0, "16 Mar, 2020", "Boda", "Tupelo, MS", 312.44),
+      createData(1, "19 Jul, 2020", "Pre-Boda", "London, UK", 866.99),
+      createData(2, "16 Mar, 2020", "Cumpleaños", "Boston, MA", 100.81),
+      createData(3, "15 Mar, 2020", "Boda", "Gary, IN", 654.39),
+      createData(4, "18 Mar, 2020", "Pre-Boda", "Long Branch, NJ", 212.79),
     ];
 
     let dataWithAssignButton = [];
