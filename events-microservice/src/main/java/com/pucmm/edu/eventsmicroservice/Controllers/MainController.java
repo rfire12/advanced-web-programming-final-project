@@ -49,14 +49,15 @@ public class MainController {
     @GetMapping("products")
     public ArrayList<ProductDTO> getProducts() {
         List<Product> products = productsRepository.findAll();
-        ArrayList<ProductDTO> misProductos = new ArrayList<>();
+        ArrayList<ProductDTO> myProducts = new ArrayList<>();
         for (Product prod : products) {
             ProductDTO pResponse = new ProductDTO();
+            pResponse.id = prod.getId();
             pResponse.price = prod.getPrice();
             pResponse.name = prod.getName();
-            misProductos.add(pResponse);
+            myProducts.add(pResponse);
         }
-        return misProductos;
+        return myProducts;
     }
 
     @CrossOrigin
