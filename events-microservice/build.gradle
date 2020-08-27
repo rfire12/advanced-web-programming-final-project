@@ -32,6 +32,7 @@ dependencies {
 	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-hystrix'
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'mysql:mysql-connector-java'
+	compile 'com.sendgrid:sendgrid-java:4.0.1'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'

@@ -10,21 +10,28 @@ import com.pucmm.edu.eventsmicroservice.DTO.InvoiceResponse;
 import com.pucmm.edu.eventsmicroservice.DTO.ProductResponse;
 import com.pucmm.edu.eventsmicroservice.Entities.Product;
 import com.pucmm.edu.eventsmicroservice.Repositories.ProductsRepository;
+import com.pucmm.edu.eventsmicroservice.Services.InvoiceServices;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("api")
 public class MainController {
     @Autowired
     ProductsRepository productsRepository;
+
+    @Autowired
+    InvoiceServices invoiceServices;
 
     @GetMapping("hello")
     public String app(HttpServletRequest request) {
@@ -33,22 +40,15 @@ public class MainController {
 
     @CrossOrigin
     @PostMapping("invoice")
-    public void realizarVenta(@RequestBody VentaResponse ventaResponse, HttpServletResponse response)
-            throws IOException {
-        ventaService.insertarVenta(ventaResponse);
-        ventaService.enviarEmailConfirmacionVenta(ventaResponse);
-        Venta vAux = ventaRepository.save(venta);
-        VentaResponse vResponse = new VentaResponse();
-        vResponse.monto = vAux.getMonto();
-        vResponse.producto = producto.getNombreProducto();
-        vResponse.usuario = vAux.getUsuario();
-
-        return vResponse;
+    public ResponseEntity<String> createInvoice(@RequestBody InvoiceResponse invoice) throws IOException {
+        invoiceServices.createInvoice(invoice);
+        invoiceServices.sendInvoiceEmail(invoice);
+        return new ResponseEntity<>("Success", HttpStatus.CREATED);
     }
 
     @CrossOrigin
     @GetMapping("products")
-    public ArrayList<ProductResponse> obtenerProductos() {
+    public ArrayList<ProductResponse> getProducts() {
         List<Product> products = productsRepository.findAll();
         ArrayList<ProductResponse> misProductos = new ArrayList<>();
         for (Product prod : products) {
@@ -62,13 +62,13 @@ public class MainController {
 
     @CrossOrigin
     @GetMapping("invoices")
-    public List<InvoiceResponse> obtenerCompras() {
-        return ventaService.obtenerAllVentas();
+    public List<InvoiceResponse> getInvoices() {
+        return invoiceServices.getInvoices();
     }
 
     @CrossOrigin
-    @GetMapping("invoices/{username}")
-    public List<InvoiceResponse> obtenerVentasCliente(@PathVariable String username) {
-        return ventaService.obtenerVentasByUser(username);
+    @GetMapping("invoices/client")
+    public List<InvoiceResponse> getInvoicesByClient(@RequestParam String username) {
+        return invoiceServices.getInvoicesByUsername(username);
     }
 }
