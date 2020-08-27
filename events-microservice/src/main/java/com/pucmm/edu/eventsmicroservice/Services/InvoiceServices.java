@@ -122,6 +122,8 @@ public class InvoiceServices {
         UserDTO[] employees = restTemplate.getForObject(url, UserDTO[].class);
 
         for (UserDTO employee : employees) {
+            System.out.println(employee.email);
+
             Email to = new Email(employee.email);
             String subject = "New Job";
             String body = "The user: " + invoice.username + "has bought the following packages "
