@@ -39,6 +39,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/api/hello", "/dbconsole", "/api/auth", "/api/clients", "/api/create-client");
+        web.ignoring().antMatchers("/api/hello", "/dbconsole", "/api/auth", "/api/clients", "/api/create-client", "/api/employees", "/api/search");
     }
 }
