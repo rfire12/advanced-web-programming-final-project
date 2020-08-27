@@ -30,7 +30,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
         http.headers().frameOptions().disable();
 
-        http.authorizeRequests().antMatchers("/dbconsole/**", "/login").permitAll().antMatchers("/").authenticated()
+        http.authorizeRequests().antMatchers("/").authenticated()
                 .and().formLogin().permitAll().and().logout().permitAll().and().authorizeRequests()
                 .antMatchers("/api/**").permitAll().and()
                 .addFilterBefore(new JWTAutorizacionFilter(), BasicAuthenticationFilter.class);
@@ -39,6 +39,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/api/hello", "/dbconsole");
+        web.ignoring().antMatchers("/api/hello", "/dbconsole", "/api/auth", "/api/clients", "/api/create-client");
     }
 }

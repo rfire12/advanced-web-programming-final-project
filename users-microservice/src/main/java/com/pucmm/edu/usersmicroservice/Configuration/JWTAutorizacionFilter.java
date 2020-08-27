@@ -26,21 +26,22 @@ public class JWTAutorizacionFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(final HttpServletRequest request, final HttpServletResponse response,
             final FilterChain filterChain) throws ServletException, IOException {
-        if (request.getServletPath().startsWith("/api/auth") || request.getServletPath().startsWith("/api/create-client") || request.getServletPath().startsWith("/api/clients")) {
-            filterChain.doFilter(request, response);
-            return;
-        }
-
         if (request.getServletPath().startsWith("/api/")) {
-            if (existeJWTToken(request, response)) {
-                final Claims claims = validateToken(request);
-                if (claims.get("authorities") != null) {
-                    setUpSpringAuthentication(claims);
+            try {
+                if (existeJWTToken(request, response)) {
+                    final Claims claims = validateToken(request);
+                    if (claims.get("authorities") != null) {
+                        setUpSpringAuthentication(claims);
+                    } else {
+                        SecurityContextHolder.clearContext();
+                    }
+                    filterChain.doFilter(request, response);
                 } else {
-                    SecurityContextHolder.clearContext();
+                    response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                    ((HttpServletResponse) response).sendError(HttpServletResponse.SC_FORBIDDEN, "Sin permisos");
+                    return;
                 }
-                filterChain.doFilter(request, response);
-            } else {
+            } catch (Exception ex) {
                 response.setStatus(HttpServletResponse.SC_FORBIDDEN);
                 ((HttpServletResponse) response).sendError(HttpServletResponse.SC_FORBIDDEN, "Sin permisos");
                 return;
