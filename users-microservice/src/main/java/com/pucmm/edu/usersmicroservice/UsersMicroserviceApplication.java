@@ -1,5 +1,7 @@
 package com.pucmm.edu.usersmicroservice;
 
+import java.util.Collections;
+
 import com.pucmm.edu.usersmicroservice.Services.UsersServices;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +20,9 @@ public class UsersMicroserviceApplication {
 	UsersServices usersServices;
 
 	public static void main(String[] args) {
-		SpringApplication.run(UsersMicroserviceApplication.class, args);
+		SpringApplication app = new SpringApplication(UsersMicroserviceApplication.class);
+		app.setDefaultProperties(Collections.singletonMap("server.port", "0"));
+		app.run(args);
 	}
 
 	@Bean
