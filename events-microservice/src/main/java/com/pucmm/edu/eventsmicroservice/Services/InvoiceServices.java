@@ -57,6 +57,7 @@ public class InvoiceServices {
             irep.id = invoice.getId();
             irep.productsNames = productNames;
             irep.username = invoice.getUsername();
+            irep.date = invoice.getDate();
             response.add(irep);
         }
         return response;
@@ -78,6 +79,7 @@ public class InvoiceServices {
 
             irep.id = invoice.getId();
             irep.productsNames = productNames;
+            irep.date = invoice.getDate();
             irep.username = invoice.getUsername();
             response.add(irep);
         }
